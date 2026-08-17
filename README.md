@@ -41,17 +41,16 @@ online-shop/
 ├── requirements.txt
 ├── README.md
 └── .gitignore
-
 ## 📸 Screenshots
 
 ### 🏠 Homepage
 
-![Homepage](screenshots/Homepage.png)
+![Homepage](screenshots/homepage.png)
 
 ### 🛒 Shopping Cart
 
-![Shopping Cart](screenshots/Cart.png)
+![Shopping Cart](screenshots/cart.png)
 
 ### 📦 My Orders
 
-![My Orders](screenshots/Orders.png)
+![My Orders](screenshots/orders.png)
