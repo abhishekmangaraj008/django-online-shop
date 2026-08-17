@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %}
+Order Confirmed - My Online Shop
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .order-confirmation {
+        width: 100%;
+        max-width: 700px;
+        margin: 60px auto;
+    }
+
+    .order-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    @media (max-width: 600px) {
+
+        .order-confirmation {
+            margin: 30px auto;
+            padding: 25px !important;
+        }
+
+        .order-buttons .button {
+            width: 100%;
+            text-align: center;
+        }
+
+    }
+
+</style>
+
+
+<div
+    class="product-card order-confirmation"
+    style="
+        text-align: center;
+        padding: 45px;
+    "
+>
+
+    <div style="
+        font-size: 60px;
+        margin-bottom: 15px;
+    ">
+        ✅
+    </div>
+
+
+    <h1>
+        Order Placed Successfully!
+    </h1>
+
+
+    <p style="
+        font-size: 18px;
+        margin-top: 20px;
+    ">
+        Thank you for shopping with My Online Shop.
+    </p>
+
+
+    <div style="
+        background: #f5f5f5;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 25px 0;
+        text-align: left;
+    ">
+
+        <h2>
+            Order #{{ order.id }}
+        </h2>
+
+
+        <p>
+            <strong>Name:</strong>
+            {{ order.first_name }} {{ order.last_name }}
+        </p>
+
+
+        <p>
+            <strong>Email:</strong>
+            {{ order.email }}
+        </p>
+
+
+        <p>
+            <strong>City:</strong>
+            {{ order.city }}
+        </p>
+
+
+        <p>
+            <strong>Total:</strong>
+            ₹{{ order.get_total_cost }}
+        </p>
+
+
+        <!-- ORDERED PRODUCTS -->
+
+        <h3 style="
+            margin-top: 25px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        ">
+            🛒 Ordered Products
+        </h3>
+
+
+        {% for item in order.items.all %}
+
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                padding: 12px 0;
+                border-bottom: 1px solid #ddd;
+            ">
+
+                <div>
+
+                    <strong>
+                        {{ item.product.name }}
+                    </strong>
+
+                    <p style="margin: 5px 0;">
+                        Quantity: {{ item.quantity }}
+                    </p>
+
+                </div>
+
+                <strong>
+                    ₹{{ item.get_cost }}
+                </strong>
+
+            </div>
+
+        {% endfor %}
+
+
+        <!-- ORDER STATUS -->
+
+        <p>
+            <strong>Status:</strong>
+
+            {% if order.status == 'pending' %}
+
+                <span style="
+                    color: #f59e0b;
+                    font-weight: bold;
+                ">
+                    🟡 Pending
+                </span>
+
+            {% elif order.status == 'processing' %}
+
+                <span style="
+                    color: #2563eb;
+                    font-weight: bold;
+                ">
+                    🔵 Processing
+                </span>
+
+            {% elif order.status == 'shipped' %}
+
+                <span style="
+                    color: #7c3aed;
+                    font-weight: bold;
+                ">
+                    🚚 Shipped
+                </span>
+
+            {% elif order.status == 'delivered' %}
+
+                <span style="
+                    color: #16a34a;
+                    font-weight: bold;
+                ">
+                    🟢 Delivered
+                </span>
+
+            {% elif order.status == 'cancelled' %}
+
+                <span style="
+                    color: #dc2626;
+                    font-weight: bold;
+                ">
+                    🔴 Cancelled
+                </span>
+
+            {% endif %}
+
+        </p>
+
+
+        <!-- PAYMENT METHOD -->
+
+        <p>
+            <strong>Payment Method:</strong>
+
+            {% if order.payment_method == 'cod' %}
+
+                💵 Cash on Delivery
+
+            {% elif order.payment_method == 'online' %}
+
+                💳 Online Payment
+
+            {% endif %}
+
+        </p>
+
+
+        <!-- PAYMENT STATUS -->
+
+        <p>
+            <strong>Payment Status:</strong>
+
+            {% if order.paid %}
+
+                <span style="
+                    color: green;
+                    font-weight: bold;
+                ">
+                    ✓ Paid
+                </span>
+
+            {% else %}
+
+                <span style="
+                    color: #f59e0b;
+                    font-weight: bold;
+                ">
+                    Pending
+                </span>
+
+            {% endif %}
+
+        </p>
+
+    </div>
+
+
+    <!-- BUTTONS -->
+
+    <div class="order-buttons">
+
+        <a
+            href="{% url 'orders:my_orders' %}"
+            class="button"
+        >
+            📦 View My Orders
+        </a>
+
+
+        <a
+            href="/"
+            class="button"
+        >
+            🛍️ Continue Shopping
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

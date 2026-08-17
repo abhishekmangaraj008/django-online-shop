@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}
+Shopping Cart - My Online Shop
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .cart-item {
+        margin-bottom: 25px;
+    }
+
+    .quantity-form {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 10px;
+    }
+
+    .quantity-button {
+        width: 35px;
+        height: 35px;
+        border: none;
+        background: #2563eb;
+        color: white;
+        font-size: 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .quantity-button:disabled {
+        background: #aaa;
+        cursor: not-allowed;
+    }
+
+    .quantity-number {
+        min-width: 45px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .cart-total {
+        margin-top: 30px;
+    }
+
+    .cart-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .remove-button {
+        background: #dc2626 !important;
+    }
+
+    .remove-button:hover {
+        background: #b91c1c !important;
+    }
+
+    @media (max-width: 600px) {
+
+        .quantity-form {
+            margin-left: 0;
+            margin-top: 10px;
+        }
+
+        .cart-buttons .button {
+            width: 100%;
+            text-align: center;
+        }
+
+    }
+
+</style>
+
+
+<h1 class="page-title">
+    🛒 Shopping Cart
+</h1>
+
+
+{% for item in cart %}
+
+<div class="product-card cart-item">
+
+    <h2>
+        {{ item.product.name }}
+    </h2>
+
+
+    <p>
+        <strong>Price:</strong>
+        ₹{{ item.price }}
+    </p>
+
+
+    <p style="
+        color: #2563eb;
+        font-weight: bold;
+    ">
+        Available Stock: {{ item.product.stock }}
+    </p>
+
+
+    <!-- QUANTITY -->
+
+    <div style="
+        margin: 15px 0;
+    ">
+
+        <strong>
+            Quantity:
+        </strong>
+
+
+        <form
+            action="{% url 'cart:cart_update' item.product.id %}"
+            method="post"
+            class="quantity-form"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- MINUS -->
+
+            <button
+                type="submit"
+                name="quantity"
+                value="{{ item.quantity|add:'-1' }}"
+                class="quantity-button"
+            >
+                −
+            </button>
+
+
+            <!-- QUANTITY -->
+
+            <span class="quantity-number">
+                {{ item.quantity }}
+            </span>
+
+
+            <!-- PLUS -->
+
+            {% if item.quantity < item.product.stock %}
+
+                <button
+                    type="submit"
+                    name="quantity"
+                    value="{{ item.quantity|add:'1' }}"
+                    class="quantity-button"
+                >
+                    +
+                </button>
+
+            {% else %}
+
+                <button
+                    type="button"
+                    disabled
+                    class="quantity-button"
+                >
+                    +
+                </button>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+
+    <!-- ITEM TOTAL -->
+
+    <p class="price">
+        Item Total: ₹{{ item.total_price }}
+    </p>
+
+
+    <!-- REMOVE -->
+
+    <a
+        href="{% url 'cart:cart_remove' item.product.id %}"
+        class="button remove-button"
+    >
+        🗑️ Remove
+    </a>
+
+</div>
+
+
+{% empty %}
+
+
+<div
+    class="product-card"
+    style="text-align: center;"
+>
+
+    <h2>
+        Your cart is empty.
+    </h2>
+
+
+    <p>
+        Add some products to your cart to continue.
+    </p>
+
+
+    <a
+        href="/"
+        class="button"
+    >
+        🛍️ Start Shopping
+    </a>
+
+</div>
+
+{% endfor %}
+
+
+<!-- GRAND TOTAL -->
+
+<div class="product-card cart-total">
+
+    <h2>
+        Grand Total: ₹{{ cart.get_total_price }}
+    </h2>
+
+
+    {% if cart|length > 0 %}
+
+        <div class="cart-buttons">
+
+            <a
+                href="{% url 'orders:order_create' %}"
+                class="button"
+            >
+                Checkout
+            </a>
+
+
+            <a
+                href="/"
+                class="button"
+            >
+                Continue Shopping
+            </a>
+
+        </div>
+
+    {% else %}
+
+        <a
+            href="/"
+            class="button"
+        >
+            🛍️ Start Shopping
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

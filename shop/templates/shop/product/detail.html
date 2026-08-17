@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ product.name }} - My Online Shop
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .product-detail-card {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .product-detail-image {
+        width: 100%;
+        max-height: 450px;
+        object-fit: contain;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .quantity-input {
+        width: 80px;
+        padding: 10px;
+        margin-left: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+    }
+
+    .detail-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+
+        .product-detail-card {
+            padding: 15px;
+        }
+
+        .product-detail-image {
+            max-height: 300px;
+        }
+
+        .quantity-input {
+            margin-left: 0;
+            margin-top: 10px;
+        }
+
+        .detail-buttons .button {
+            width: 100%;
+            text-align: center;
+        }
+
+    }
+
+</style>
+
+
+<div class="product-card product-detail-card">
+
+
+    <!-- PRODUCT IMAGE -->
+
+    {% if product.image %}
+
+        <img
+            src="{{ product.image.url }}"
+            alt="{{ product.name }}"
+            class="product-detail-image"
+        >
+
+    {% endif %}
+
+
+    <!-- CATEGORY -->
+
+    <p style="
+        color: #2563eb;
+        font-weight: bold;
+    ">
+        {{ product.category.name }}
+    </p>
+
+
+    <!-- PRODUCT NAME -->
+
+    <h1>
+        {{ product.name }}
+    </h1>
+
+
+    <!-- DESCRIPTION -->
+
+    <p>
+        {{ product.description }}
+    </p>
+
+
+    <!-- PRICE -->
+
+    <p class="price">
+        ₹{{ product.price }}
+    </p>
+
+
+    <!-- STOCK -->
+
+    {% if product.available and product.stock > 0 %}
+
+
+        {% if product.stock <= 5 %}
+
+            <p style="
+                color: #f59e0b;
+                font-weight: bold;
+                font-size: 18px;
+            ">
+                ⚠ Only {{ product.stock }} left
+            </p>
+
+        {% else %}
+
+            <p style="
+                color: green;
+                font-weight: bold;
+                font-size: 18px;
+            ">
+                ✓ In Stock
+            </p>
+
+        {% endif %}
+
+
+        <!-- ADD TO CART -->
+
+        <form
+            action="{% url 'cart:cart_add' product.id %}"
+            method="post"
+        >
+
+            {% csrf_token %}
+
+
+            <label>
+                <strong>
+                    Quantity:
+                </strong>
+            </label>
+
+
+            <input
+                type="number"
+                name="quantity"
+                value="1"
+                min="1"
+                max="{{ product.stock }}"
+                class="quantity-input"
+            >
+
+
+            <br>
+
+
+            <button
+                type="submit"
+                class="button"
+                style="
+                    border: none;
+                    cursor: pointer;
+                "
+            >
+                🛒 Add to Cart
+            </button>
+
+        </form>
+
+
+    {% else %}
+
+
+        <!-- OUT OF STOCK -->
+
+        <p style="
+            color: red;
+            font-weight: bold;
+            font-size: 18px;
+        ">
+            ✕ Out of Stock
+        </p>
+
+
+        <span style="
+            display: inline-block;
+            background: #999;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+        ">
+            Out of Stock
+        </span>
+
+
+    {% endif %}
+
+
+    <!-- BUTTONS -->
+
+    <div class="detail-buttons">
+
+        <a
+            href="/"
+            class="button"
+        >
+            ← Back to Shop
+        </a>
+
+
+        <a
+            href="/cart/"
+            class="button"
+        >
+            🛒 View Cart
+        </a>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

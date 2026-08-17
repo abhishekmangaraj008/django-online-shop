@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}
+Checkout - My Online Shop
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .checkout-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+
+    @media (max-width: 700px) {
+
+        .checkout-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+
+
+<h1 class="page-title">
+    🛍️ Checkout
+</h1>
+
+
+<div class="checkout-grid">
+
+
+    <!-- ORDER SUMMARY -->
+
+    <div class="product-card">
+
+        <h2>
+            Order Summary
+        </h2>
+
+
+        {% for item in cart %}
+
+            <div style="
+                padding: 15px 0;
+                border-bottom: 1px solid #ddd;
+            ">
+
+                <strong>
+                    {{ item.product.name }}
+                </strong>
+
+                <p style="
+                    margin: 8px 0;
+                ">
+                    Quantity: {{ item.quantity }}
+                </p>
+
+                <p style="
+                    margin: 8px 0;
+                ">
+                    ₹{{ item.total_price }}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+
+        <h2 style="
+            margin-top: 25px;
+        ">
+            Total: ₹{{ cart.get_total_price }}
+        </h2>
+
+    </div>
+
+
+    <!-- CUSTOMER DETAILS -->
+
+    <div class="product-card">
+
+        <h2>
+            Customer Details
+        </h2>
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+
+            <button
+                type="submit"
+                class="button"
+                style="
+                    border: none;
+                    cursor: pointer;
+                    font-size: 16px;
+                "
+            >
+                Place Order
+            </button>
+
+        </form>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

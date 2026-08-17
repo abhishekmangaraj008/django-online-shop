@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Account - My Online Shop
+{% endblock %}
+
+{% block content %}
+
+<div
+    class="product-card"
+    style="
+        max-width: 500px;
+        margin: 60px auto;
+        padding: 35px;
+    "
+>
+
+    <h1
+        style="
+            text-align: center;
+            margin-bottom: 30px;
+        "
+    >
+        👤 Create Account
+    </h1>
+
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+
+        <button
+            type="submit"
+            class="button"
+            style="
+                width: 100%;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+            "
+        >
+            Create Account
+        </button>
+
+    </form>
+
+
+    <p style="
+        text-align: center;
+        margin-top: 25px;
+    ">
+
+        Already have an account?
+
+        <a
+            href="/accounts/login/"
+            style="
+                color: #2563eb;
+                font-weight: bold;
+            "
+        >
+            Login
+        </a>
+
+    </p>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}My Online Shop{% endblock %}
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            background: #111827;
+            padding: 18px 50px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .cart-link {
+            background: #2563eb;
+            padding: 10px 18px;
+            border-radius: 6px;
+        }
+
+        .cart-link:hover {
+            background: #1d4ed8;
+        }
+
+        /* MAIN CONTAINER */
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        /* PAGE TITLE */
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        /* PRODUCTS GRID */
+
+        .products {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(230px, 1fr));
+
+            gap: 25px;
+        }
+
+        /* PRODUCT CARD */
+
+        .product-card {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.08);
+
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card h2 {
+            margin-top: 0;
+        }
+
+        /* PRODUCT IMAGE */
+
+        .product-image {
+            width: 100%;
+            height: 230px;
+
+            object-fit: contain;
+
+            border-radius: 10px;
+
+            margin-bottom: 15px;
+        }
+
+        /* PRICE */
+
+        .price {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        /* BUTTONS */
+
+        .button {
+            display: inline-block;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 10px 16px;
+
+            border-radius: 6px;
+
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        .product-buttons {
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        /* FOOTER */
+
+        footer {
+            margin-top: 60px;
+
+            background: #111827;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+        .products {
+    align-items: stretch;
+}
+
+.product-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-buttons {
+    margin-top: auto;
+    padding-top: 15px;
+}
+
+.product-buttons .button {
+    margin-top: 0;
+}
+
+@media (max-width: 700px) {
+
+    nav {
+        padding: 15px 20px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    nav > div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    nav > div a {
+        margin-right: 0 !important;
+    }
+
+    nav > div form {
+        margin-right: 0 !important;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <a href="/" class="logo">
+            🛒 My Online Shop
+        </a>
+
+<div>
+
+    <a href="/" style="margin-right: 20px;">
+        Home
+    </a>
+
+
+    {% if user.is_authenticated %}
+
+        <span style="
+            color: white;
+            margin-right: 15px;
+        ">
+            Hello, {{ user.username }}
+        </span>
+
+
+        <a
+            href="{% url 'orders:my_orders' %}"
+            style="margin-right: 20px;"
+        >
+            My Orders
+        </a>
+
+
+        <form
+            method="post"
+            action="{% url 'logout' %}"
+            style="
+                display: inline;
+                margin-right: 20px;
+            "
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                style="
+                    background: none;
+                    border: none;
+                    color: white;
+                    cursor: pointer;
+                    font-size: 16px;
+                "
+            >
+                Logout
+            </button>
+
+        </form>
+
+
+    {% else %}
+
+        <a
+            href="/accounts/login/"
+            style="margin-right: 20px;"
+        >
+            Login
+        </a>
+
+
+        <a
+            href="/register/"
+            style="margin-right: 20px;"
+        >
+            Register
+        </a>
+
+    {% endif %}
+
+<a
+    href="/cart/"
+    class="cart-link"
+>
+    🛒 Cart ({{ cart|length }})
+</a>
+
+</div>
+
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="container">
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 My Online Shop
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
