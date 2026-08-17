@@ -1,50 +1,57 @@
-# My Online Shop
+# 🛒 My Online Shop
 
-A Django-based online shopping website for selling electronic products.
+A full-stack e-commerce web application built with Django and Python.
 
-## Features
+## 🚀 Features
 
-- User registration and login
-- Product listing
-- Product categories
-- Product search
-- Product images
-- Product details
-- Stock management
-- Low-stock warning
-- Out-of-stock status
-- Shopping cart
-- Cart quantity management
-- Checkout
-- Order placement
-- Automatic stock reduction
-- Order history
-- Order details
-- Order tracking
-- Payment method display
-- Django admin panel
+- User registration, login and logout
+- Product listing and product details
+- Product search and category filtering
+- Shopping cart with quantity management
+- Stock and inventory management
+- Low-stock and out-of-stock handling
+- Checkout and order placement
+- Automatic stock reduction after orders
+- Order history and order details
+- Order status tracking
+- Cash on Delivery and online payment status
+- Django Admin panel for managing products and orders
+- Responsive user interface
 
-## Technologies Used
+## 🛠️ Technologies
 
 - Python
 - Django
-- HTML
-- CSS
+- HTML5
+- CSS3
 - SQLite
 - Django Templates
 
-## Project Structure
+## 📁 Project Structure
 
 ```text
 online-shop/
-│
+├── cart/
+├── myshop/
+├── orders/
+├── shop/
+├── templates/
+├── media/
 ├── manage.py
 ├── requirements.txt
-├── db.sqlite3
-│
-├── myshop/
-├── shop/
-├── cart/
-├── orders/
-├── templates/
-└── media/
+├── README.md
+└── .gitignore
+
+## 📸 Screenshots
+
+### 🏠 Homepage
+
+![Homepage](screenshots/Homepage.png)
+
+### 🛒 Shopping Cart
+
+![Shopping Cart](screenshots/Cart.png)
+
+### 📦 My Orders
+
+![My Orders](screenshots/Orders.png)
